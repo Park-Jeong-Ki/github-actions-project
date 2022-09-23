@@ -3,3 +3,5 @@ sklearn
 matplotlib
 seaborn
 numpy
+black==22.6.0
+coverage==6.3.2
