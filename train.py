@@ -9,20 +9,20 @@ import numpy as np
 # Set random SEED
 SEED = 42
 
-################################
-########## DATA PREP ###########
-################################
+# DATA PREP
 
 # Load in the data
 df = pd.read_csv("wine_quality.csv")
 
 # Split into train and test sections
 y = df.pop("quality")
-X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=SEED)
+X_train, X_test, y_train, y_test = train_test_split(
+    df, y, test_size=0.2, random_state=SEED
+)
 
-#################################
-########## MODELLING ############
-#################################
+
+# MODELLING
+
 
 # Fit a model on the train section
 regr = RandomForestRegressor(max_depth=2, random_state=SEED)
@@ -39,13 +39,14 @@ with open("metrics.txt", "w", encoding="utf-8") as outfile:
     outfile.write(f"Test variance explained: {test_score}")
 
 
-##########################################
-##### PLOT FEATURE IMPORTANCE ############
-##########################################
+# PLOT FEATURE IMPORTANCE
+
 # Calculate feature importance in random forest
 importances = regr.feature_importances_
 labels = df.columns
-FEATURE_DF = pd.DataFrame(list(zip(labels, importances)), columns=["feature", "importance"])
+FEATURE_DF = pd.DataFrame(
+    list(zip(labels, importances)), columns=["feature", "importance"]
+)
 FEATURE_DF = FEATURE_DF.sort_values(
     by="importance",
     ascending=False,
@@ -66,9 +67,7 @@ plt.savefig("feature_importance.png", dpi=120)
 plt.close()
 
 
-##########################################
-############ PLOT RESIDUALS  #############
-##########################################
+# PLOT RESIDUALS
 
 y_pred = regr.predict(X_test) + np.random.normal(0, 0.25, len(y_test))
 y_jitter = y_test + np.random.normal(0, 0.25, len(y_test))
