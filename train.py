@@ -1,3 +1,4 @@
+"""Module for train. """
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
@@ -5,8 +6,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-# Set random seed
-seed = 42
+# Set random SEED
+SEED = 42
 
 ################################
 ########## DATA PREP ###########
@@ -17,14 +18,14 @@ df = pd.read_csv("wine_quality.csv")
 
 # Split into train and test sections
 y = df.pop("quality")
-X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=seed)
+X_train, X_test, y_train, y_test = train_test_split(df, y, test_size=0.2, random_state=SEED)
 
 #################################
 ########## MODELLING ############
 #################################
 
 # Fit a model on the train section
-regr = RandomForestRegressor(max_depth=2, random_state=seed)
+regr = RandomForestRegressor(max_depth=2, random_state=SEED)
 regr.fit(X_train, y_train)
 
 # Report training set score
@@ -33,9 +34,9 @@ train_score = regr.score(X_train, y_train) * 100
 test_score = regr.score(X_test, y_test) * 100
 
 # Write scores to a file
-with open("metrics.txt", "w") as outfile:
-    outfile.write("Training variance explained: %2.1f%%\n" % train_score)
-    outfile.write("Test variance explained: %2.1f%%\n" % test_score)
+with open("metrics.txt", "w", encoding="utf-8") as outfile:
+    outfile.write(f"Training variance explained: {train_score}")
+    outfile.write(f"Test variance explained: {test_score}")
 
 
 ##########################################
@@ -44,21 +45,21 @@ with open("metrics.txt", "w") as outfile:
 # Calculate feature importance in random forest
 importances = regr.feature_importances_
 labels = df.columns
-feature_df = pd.DataFrame(list(zip(labels, importances)), columns=["feature", "importance"])
-feature_df = feature_df.sort_values(
+FEATURE_DF = pd.DataFrame(list(zip(labels, importances)), columns=["feature", "importance"])
+FEATURE_DF = FEATURE_DF.sort_values(
     by="importance",
     ascending=False,
 )
 
 # image formatting
-axis_fs = 18  # fontsize
-title_fs = 22  # fontsize
+AXIS_FS = 18  # fontsize
+TITLE_FS = 22  # fontsize
 sns.set(style="whitegrid")
 
-ax = sns.barplot(x="importance", y="feature", data=feature_df)
-ax.set_xlabel("Importance", fontsize=axis_fs)
-ax.set_ylabel("Feature", fontsize=axis_fs)  # ylabel
-ax.set_title("Random forest\nfeature importance", fontsize=title_fs)
+ax = sns.barplot(x="importance", y="feature", data=FEATURE_DF)
+ax.set_xlabel("Importance", fontsize=AXIS_FS)
+ax.set_ylabel("Feature", fontsize=AXIS_FS)  # ylabel
+ax.set_title("Random forest\nfeature importance", fontsize=TITLE_FS)
 
 plt.tight_layout()
 plt.savefig("feature_importance.png", dpi=120)
@@ -75,9 +76,9 @@ res_df = pd.DataFrame(list(zip(y_jitter, y_pred)), columns=["true", "pred"])
 
 ax = sns.scatterplot(x="true", y="pred", data=res_df)
 ax.set_aspect("equal")
-ax.set_xlabel("True wine quality", fontsize=axis_fs)
-ax.set_ylabel("Predicted wine quality", fontsize=axis_fs)  # ylabel
-ax.set_title("Residuals", fontsize=title_fs)
+ax.set_xlabel("True wine quality", fontsize=AXIS_FS)
+ax.set_ylabel("Predicted wine quality", fontsize=AXIS_FS)  # ylabel
+ax.set_title("Residuals", fontsize=TITLE_FS)
 
 # Make it pretty- square aspect ratio
 ax.plot([1, 10], [1, 10], "black", linewidth=1)
