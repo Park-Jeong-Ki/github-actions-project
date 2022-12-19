@@ -1,0 +1,1 @@
+Training variance explained: 34.79926193529862Test variance explained: 40.318034127962264
