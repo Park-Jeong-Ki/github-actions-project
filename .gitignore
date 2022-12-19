@@ -1,3 +1,4 @@
 test/
 coverage.xml
 .coverage
+.vscode

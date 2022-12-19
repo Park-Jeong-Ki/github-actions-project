@@ -25,7 +25,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 # Fit a model on the train section
-regr = linear_model.LinearRegression()
+regr = RandomForestRegressor(max_depth=2, random_state=SEED)
 regr.fit(X_train, y_train)
 
 # Report training set score
